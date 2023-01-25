@@ -38,6 +38,19 @@ class Joint:
         return math.degrees(self.angle)
 
 
+class Point:
+    def __init__(self, x=-100, y=-100):
+        self.x = x
+        self.y = y
+
+    def update(self, x, y):
+        self.x = x
+        self.y = y
+
+    def draw(self):
+        arcade.draw_circle_filled(self.x, self.y, 10, arcade.color.YELLOW, num_segments=20)
+
+
 class IK(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
@@ -47,6 +60,8 @@ class IK(arcade.Window):
             Joint((CENTER_X/2) + 100, CENTER_Y, 150, 45, arcade.color.BLUE),
             Joint((CENTER_X/2) + 250, CENTER_Y, 100, 90, arcade.color.GREEN)
         }
+
+        self.point = Point()
 
         arcade.set_background_color(arcade.color.BLACK)
 
@@ -63,9 +78,12 @@ class IK(arcade.Window):
 
         for joint in self.joints:
             arcade.draw_circle_filled(joint.end_x, joint.end_y, 12, arcade.color.WHITE, num_segments=20)
+        
+        self.point.draw()
 
     def on_mouse_press(self, x, y, button, key_modifier):
         print(f"Adding new point to get (X: {x}, Y: {y})")
+        self.point.update(x, y)
 
 
 def main():
